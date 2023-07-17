@@ -14,6 +14,10 @@ public class Inventory {
         this.sales = 0;
     }
 
+    public List<Item> getListOfItems() {
+        return listOfItems;
+    }
+
     public int getDiscount() {
         return this.discount;
     }
@@ -57,9 +61,9 @@ public class Inventory {
         return restockList;
     }
 
-    public void sellItem(int id, int amount) {
+    public void sellItem(String name, int amount) {
         for (Item i : listOfItems) {
-            if (i.getId() == id) {
+            if (i.getProductName().equals(name)) {
                 i.updateQuantity(-amount);
                 if (discount != 0) {
                     this.sales += amount * i.getPrice() * (1 - this.discount / 100.0);
