@@ -30,6 +30,33 @@ public class Inventory {
         this.listOfItems.add(i);
     }
 
+    public boolean isPresent(String name) {
+        for (Item loopItem : listOfItems) {
+            if (loopItem.getProductName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void restockItem(String name, int amount) {
+        for (Item loopItem : listOfItems) {
+            if (loopItem.getProductName().equals(name)) {
+                loopItem.updateQuantity(amount);
+            }
+        }
+    }
+
+    public ArrayList<String> itemsToRestock() {
+        ArrayList<String> restockList = new ArrayList<>();
+        for (Item loopItem : listOfItems) {
+            if (loopItem.isLow()) {
+                restockList.add(loopItem.getProductName());
+            }
+        }
+        return restockList;
+    }
+
     public void sellItem(int id, int amount) {
         for (Item i : listOfItems) {
             if (i.getId() == id) {

@@ -1,8 +1,8 @@
 package model;
 
 public class Item {
-    private static int newId = 1;
     private static final int lowQuantity = 3;
+    private static int newId = 1;
     private int id;
     private String productName;
     private int quantity;
