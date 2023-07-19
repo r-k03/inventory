@@ -9,14 +9,18 @@ import java.util.Scanner;
 // Structure of InventoryApp taken from
 // https://github.students.cs.ubc.ca/CPSC210/TellerApp/blob/main/src/main/ca/ubc/cpsc210/bank/ui/TellerApp.java
 
+// Inventory Management Application
 public class InventoryApp {
     private Inventory inv;
     private Scanner input;
 
+    // EFFECTS: runs the inventory application
     public InventoryApp() {
         runInventory();
     }
 
+    // MODIFIES: this
+    // EFFECTS: handles user input
     private void runInventory() {
         boolean continueProcess = true;
         String command;
@@ -36,12 +40,15 @@ public class InventoryApp {
         System.out.println("Process Ended. Have a Great Day!");
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes the inventory and scanner
     private void init() {
         inv = new Inventory();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
     }
 
+    // EFFECTS: presents the options the user can choose from
     private void menuOptions() {
         System.out.println("Choose an Option (Number):");
         System.out.println("1. Add New Item to Inventory");
@@ -53,6 +60,7 @@ public class InventoryApp {
         System.out.println("7. Quit");
     }
 
+    // EFFECTS: processes the inputs the user gives
     private void processChoice(String command) {
         switch (command) {
             case "1":
@@ -84,13 +92,17 @@ public class InventoryApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds a new item to the list in inventory
     private void doNew() {
-        String name;
+        String name = "";
         int amt = -1;
         double price = -1;
-        System.out.println("Enter Product Name: ");
-        name = input.next();
-        name = name.toLowerCase();
+        while (name.length() == 0) {
+            System.out.println("Enter Product Name: ");
+            name = input.next();
+            name = name.toLowerCase();
+        }
         if (inv.isPresent(name)) {
             System.out.println("Item Already Exists");
         } else {
@@ -104,6 +116,7 @@ public class InventoryApp {
         }
     }
 
+    // EFFECTS: increases the stock of a particular item
     private void doAdd() {
         System.out.println("Enter ID of the Product to be Restocked: ");
         int id = input.nextInt();
@@ -120,6 +133,8 @@ public class InventoryApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: conducts a sell transaction and adds the money made to sales
     private void doSell() {
         System.out.println("Enter ID of the Product to be Restocked: ");
         int id = input.nextInt();
@@ -136,10 +151,12 @@ public class InventoryApp {
         }
     }
 
+    // EFFECTS: returns the money made in sales
     private void returnSales() {
         System.out.printf("Amount Earned in Sales: $%.2f\n", inv.getSales());
     }
 
+    // EFFECTS: returns the items that have to be restocked
     private void doViewRestock() {
         ArrayList<Item> inventoryRestock = inv.itemsToRestock();
         if (inventoryRestock.isEmpty()) {
@@ -152,6 +169,9 @@ public class InventoryApp {
         }
     }
 
+
+    // MODIFIES: this
+    // EFFECTS: sets a discount on items being sold
     private void doDiscount() {
         int discount = -1;
         while (!(0 <= discount && discount <= 100)) {

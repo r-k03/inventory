@@ -1,5 +1,6 @@
 package model;
 
+// represents an item having a unique id, product name, its quantity, as well as the price for one unit of the item
 public class Item {
     private static final int lowQuantity = 3;
     private int id;

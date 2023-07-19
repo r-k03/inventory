@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+// represents an inventory containing a list of items in stock, the current discount, and total sales ($)
 public class Inventory {
     private final List<Item> listOfItems;
     private int discount;
