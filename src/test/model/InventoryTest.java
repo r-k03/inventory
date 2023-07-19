@@ -141,5 +141,11 @@ public class InventoryTest {
         testInventory.sellItem(3, 2);
         assertEquals(1, testItem3.getQuantity());
         assertEquals(100, testInventory.getSales());
+
+        testInventory.setDiscount(50);
+        testInventory.sellItem(2, 2);
+        testInventory.sellItem(3, 1);
+        assertEquals(0, testItem3.getQuantity());
+        assertEquals(4, testItem2.getQuantity());
     }
 }
