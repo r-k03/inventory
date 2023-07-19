@@ -40,6 +40,8 @@ public class InventoryTest {
 
     @Test
     void testGetItemFromId() {
+        assertNull(testInventory.getItemFromId(1));
+
         testInventory.addNewItem(testItem1);
         assertEquals(testItem1, testInventory.getItemFromId(1));
 
