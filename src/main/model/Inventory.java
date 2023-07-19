@@ -31,6 +31,7 @@ public class Inventory {
     }
 
     public void addNewItem(Item i) {
+        i.setId(listOfItems.size() + 1);
         this.listOfItems.add(i);
     }
 
@@ -43,27 +44,27 @@ public class Inventory {
         return false;
     }
 
-    public void restockItem(String name, int amount) {
+    public void restockItem(int id, int amount) {
         for (Item loopItem : listOfItems) {
-            if (loopItem.getProductName().equals(name)) {
+            if (loopItem.getId() == id) {
                 loopItem.updateQuantity(amount);
             }
         }
     }
 
-    public ArrayList<String> itemsToRestock() {
-        ArrayList<String> restockList = new ArrayList<>();
+    public ArrayList<Item> itemsToRestock() {
+        ArrayList<Item> restockList = new ArrayList<>();
         for (Item loopItem : listOfItems) {
             if (loopItem.isLow()) {
-                restockList.add(loopItem.getProductName());
+                restockList.add(loopItem);
             }
         }
         return restockList;
     }
 
-    public void sellItem(String name, int amount) {
+    public void sellItem(int id, int amount) {
         for (Item i : listOfItems) {
-            if (i.getProductName().equals(name)) {
+            if (i.getId() == id) {
                 i.updateQuantity(-amount);
                 if (discount != 0) {
                     this.sales += amount * i.getPrice() * (1 - this.discount / 100.0);

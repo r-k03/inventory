@@ -17,10 +17,30 @@ class ItemTest {
 
     @Test
     void testConstructor() {
-        assertEquals(3, testItem.getId());
+        assertEquals(0, testItem.getId());
         assertEquals("PC Electric Kettle", testItem.getProductName());
         assertEquals(1, testItem.getQuantity());
         assertEquals(40, testItem.getPrice());
+    }
+
+    @Test
+    void testSetId() {
+        testItem.setId(2);
+        assertEquals(2, testItem.getId());
+
+        testItem.setId(3);
+        testItem.setId(5);
+        assertEquals(5, testItem.getId());
+    }
+
+    @Test
+    void testSetPrice() {
+        testItem.setPrice(44);
+        assertEquals(44, testItem.getPrice());
+
+        testItem.setPrice(40);
+        testItem.setPrice(1);
+        assertEquals(1, testItem.getPrice());
     }
 
     @Test

@@ -71,21 +71,21 @@ public class InventoryTest {
     @Test
     void testRestockItem() {
         testInventory.addNewItem(testItem1);
-        testInventory.restockItem("pc electric kettle", 2);
+        testInventory.restockItem(1, 2);
         assertEquals(3, testItem1.getQuantity());
 
         testInventory.addNewItem(testItem2);
         testInventory.addNewItem(testItem3);
-        testInventory.restockItem("brita water filter", 1);
-        testInventory.restockItem("brita water filter", 3);
-        testInventory.restockItem("honeywell turbo fan", 6);
+        testInventory.restockItem(2, 1);
+        testInventory.restockItem(2, 3);
+        testInventory.restockItem(3, 6);
         assertEquals(10, testItem2.getQuantity());
         assertEquals(9, testItem3.getQuantity());
     }
 
     @Test
     void testItemsToRestock() {
-        ArrayList<String> testList = testInventory.itemsToRestock();
+        ArrayList<Item> testList = testInventory.itemsToRestock();
         assertEquals(0, testList.size());
 
         testInventory.addNewItem(testItem2);
@@ -96,20 +96,20 @@ public class InventoryTest {
         testInventory.addNewItem(testItem3);
         testList = testInventory.itemsToRestock();
         assertEquals(2, testList.size());
-        assertTrue(testList.contains("pc electric kettle"));
-        assertTrue(testList.contains("honeywell turbo fan"));
+        assertTrue(testList.contains(testItem1));
+        assertTrue(testList.contains(testItem3));
     }
 
     @Test
     void testSellItem() {
         testInventory.addNewItem(testItem1);
-        testInventory.sellItem("pc electric kettle", 1);
+        testInventory.sellItem(1, 1);
         assertEquals(0, testItem1.getQuantity());
         assertEquals(40, testInventory.getSales());
 
         testInventory.addNewItem(testItem2);
         testInventory.addNewItem(testItem3);
-        testInventory.sellItem("honeywell turbo fan", 2);
+        testInventory.sellItem(3, 2);
         assertEquals(1, testItem3.getQuantity());
         assertEquals(100, testInventory.getSales());
     }
