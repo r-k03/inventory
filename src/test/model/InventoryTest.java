@@ -39,6 +39,17 @@ public class InventoryTest {
     }
 
     @Test
+    void testGetItemFromId() {
+        testInventory.addNewItem(testItem1);
+        assertEquals(testItem1, testInventory.getItemFromId(1));
+
+        testInventory.addNewItem(testItem2);
+        testInventory.addNewItem(testItem3);
+        assertEquals(testItem3, testInventory.getItemFromId(3));
+        assertEquals(testItem2, testInventory.getItemFromId(2));
+    }
+
+    @Test
     void testAddNewItem() {
         testInventory.addNewItem(testItem1);
         assertEquals(1, testInventory.getListOfItems().size());
@@ -54,6 +65,22 @@ public class InventoryTest {
 
     @Test
     void testIsPresent() {
+        assertFalse(testInventory.isPresent(1));
+
+        testInventory.addNewItem(testItem3);
+        assertFalse(testInventory.isPresent(0));
+        assertTrue(testInventory.isPresent(1));
+
+        testInventory.addNewItem(testItem1);
+        testInventory.addNewItem(testItem2);
+        assertTrue(testInventory.isPresent(3));
+        assertTrue(testInventory.isPresent(1));
+        assertTrue(testInventory.isPresent(2));
+        assertFalse(testInventory.isPresent(6));
+    }
+
+    @Test
+    void testIsPresent2() {
         assertFalse(testInventory.isPresent("pc electric kettle"));
 
         testInventory.addNewItem(testItem3);

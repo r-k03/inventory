@@ -30,11 +30,36 @@ public class Inventory {
         this.discount = amount;
     }
 
+    // REQUIRES: an item with the given id is present in listOfItems
+    // EFFECTS: returns the item with matching id
+    public Item getItemFromId(int id) {
+        for (Item i : listOfItems) {
+            if (id == i.getId()) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    // REQUIRES: the item is not present in listOfItems
+    // MODIFIES: this
+    // EFFECTS: adds a new item to the list of items
     public void addNewItem(Item i) {
         i.setId(listOfItems.size() + 1);
         this.listOfItems.add(i);
     }
 
+    // EFFECTS: indicates whether an item with the same id is present in the list
+    public boolean isPresent(int id) {
+        for (Item loopItem : listOfItems) {
+            if (loopItem.getId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // EFFECTS: indicates whether an item with the same name is present in the list
     public boolean isPresent(String name) {
         for (Item loopItem : listOfItems) {
             if (loopItem.getProductName().equals(name)) {
@@ -44,6 +69,8 @@ public class Inventory {
         return false;
     }
 
+    // REQUIRES: an item with the given id is present in listOfItems
+    // EFFECTS: updates the item with the same id by increasing its quantity
     public void restockItem(int id, int amount) {
         for (Item loopItem : listOfItems) {
             if (loopItem.getId() == id) {
@@ -52,6 +79,7 @@ public class Inventory {
         }
     }
 
+    // EFFECTS: returns a list of items that have to be restocked
     public ArrayList<Item> itemsToRestock() {
         ArrayList<Item> restockList = new ArrayList<>();
         for (Item loopItem : listOfItems) {
@@ -62,6 +90,9 @@ public class Inventory {
         return restockList;
     }
 
+    // REQUIRES: an item with matching ids is present in listOfItems && amount <= quantity of specified item
+    // MODIFIES: this
+    // EFFECTS: sells the given quantity of the item and adds the price to sales
     public void sellItem(int id, int amount) {
         for (Item i : listOfItems) {
             if (i.getId() == id) {

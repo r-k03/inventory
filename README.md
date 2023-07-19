@@ -5,8 +5,9 @@ The application I am designing for my project is an inventory management system,
 ## User Stories
 
 - As a user, I want to be able to add a new product to the current inventory of products
-- As a user, I want to be able to change the quantity certain products in my inventory
+- As a user, I want to be able to change the quantity of products in my inventory, by restocking or selling them
 - As a user, I want to be able to know when to restock products as their quantity becomes low
-- As a user, I want to be able to set discounts 
+- As a user, I want to be able to view the amount of money I made in sales
+- As a user, I want to be able to set discounts that are applied when selling products
 
   
