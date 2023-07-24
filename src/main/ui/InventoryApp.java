@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 // Inventory Management Application
 public class InventoryApp {
-    private static final String JSON_LOC = "";
+    private static final String JSON_LOC = "./data/Inventory.json";
     private Inventory inv;
     private Scanner input;
     private Writer jsonWriter;
