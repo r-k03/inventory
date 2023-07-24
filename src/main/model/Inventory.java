@@ -15,6 +15,7 @@ public class Inventory implements Writable {
     private int discount;
     private double sales;
 
+    // EFFECTS: constructs an inventory with no items, and 0 sales as well as discounts
     public Inventory() {
         this.listOfItems = new ArrayList<>();
         this.discount = 0;

@@ -38,17 +38,8 @@ public class InventoryApp {
             menuOptions();
             command = input.next();
 
-            if (command.equals("8")) {
-                String save = "";
-                while (!(save.equals("y") || save.equals("n"))) {
-                    System.out.println("Would you Like to Save Inventory Data? (y/n)");
-                    save = input.next();
-                }
-                if (save.equals("y")) {
-                    jsonWriter.open();
-                    jsonWriter.write(inv);
-                    jsonWriter.close();
-                }
+            if (command.equals("9")) {
+                doSave();
                 continueProcess = false;
             } else {
                 processChoice(command);
@@ -70,42 +61,58 @@ public class InventoryApp {
     // EFFECTS: presents the options the user can choose from
     private void menuOptions() {
         System.out.println("Choose an Option (Number):");
-        System.out.println("1. Add New Item to Inventory");
-        System.out.println("2. Restock an Existing Item");
-        System.out.println("3. Sell an Item");
-        System.out.println("4. View Money Made in Sales");
-        System.out.println("5. View Products that are Low in Quantity");
-        System.out.println("6. Set a Discount Percentage");
-        System.out.println("7. Load Inventory From Save");
-        System.out.println("8. Quit");
+        System.out.println("1. View Details of all Items in Inventory");
+        System.out.println("2. Add New Item to Inventory");
+        System.out.println("3. Restock an Existing Item");
+        System.out.println("4. Sell an Item");
+        System.out.println("5. View Money Made in Sales");
+        System.out.println("6. View Products that are Low in Quantity");
+        System.out.println("7. Set a Discount Percentage");
+        System.out.println("8. Load Inventory From Save");
+        System.out.println("9. Quit");
     }
 
     // EFFECTS: processes the inputs the user gives
     private void processChoice(String command) {
         switch (command) {
             case "1":
-                doNew();
+                doPrint();
                 break;
             case "2":
-                doAdd();
+                doNew();
                 break;
             case "3":
-                doSell();
+                doAdd();
                 break;
             case "4":
-                returnSales();
+                doSell();
                 break;
             case "5":
-                doViewRestock();
+                returnSales();
                 break;
             case "6":
-                doDiscount();
+                doViewRestock();
                 break;
             case "7":
+                doDiscount();
+                break;
+            case "8":
                 doLoad();
                 break;
             default:
                 System.out.println("Invalid Choice");
+        }
+    }
+
+    // EFFECTS: returns the details of all items in inventory, if any else indicates otherwise
+    private void doPrint() {
+        if (inv.getListOfItems().isEmpty()) {
+            System.out.println("No Items in Inventory");
+        } else {
+            System.out.println("ID:Name:Quantity:Price");
+            for (Item i : inv.getListOfItems()) {
+                System.out.println(i.getId() + " : " + i.getProductName() + " : " + i.getQuantity() + " : " + i.getPrice());
+            }
         }
     }
 
@@ -130,6 +137,7 @@ public class InventoryApp {
                 price = input.nextDouble();
             }
             inv.addNewItem(new Item(name, amt, price));
+            System.out.println("Item Successfully Added");
         }
     }
 
@@ -145,6 +153,7 @@ public class InventoryApp {
                 amt = input.nextInt();
             }
             itemToAdd.updateQuantity(amt);
+            System.out.println("Quantity of " + inv.getItemFromId(id).getProductName() + " has been updated to " + inv.getItemFromId(id).getQuantity());
         } else {
             System.out.println("Item Not Found");
         }
@@ -153,7 +162,7 @@ public class InventoryApp {
     // MODIFIES: this
     // EFFECTS: conducts a sell transaction and adds the money made to sales
     private void doSell() {
-        System.out.println("Enter ID of the Product to be Restocked: ");
+        System.out.println("Enter ID of the Product to be Sold: ");
         int id = input.nextInt();
         if (inv.isPresent(id)) {
             Item itemToSell = inv.getItemFromId(id);
@@ -163,6 +172,7 @@ public class InventoryApp {
                 amt = input.nextInt();
             }
             inv.sellItem(id, amt);
+            System.out.println(amt + " " + inv.getItemFromId(id).getProductName() + " has been sold for $" + (inv.getItemFromId(id).getPrice() * amt));
         } else {
             System.out.println("Item Not Found");
         }
@@ -196,14 +206,33 @@ public class InventoryApp {
             discount = input.nextInt();
         }
         inv.setDiscount(discount);
+        System.out.println("Discount has been Set");
     }
 
+    // REQUIRES: json file is not blank
+    // MODIFIES: this
+    // EFFECTS: returns the inventory data stored previously
     private void doLoad() {
         try {
             inv = jsonReader.read();
             System.out.println("Successfully Loaded Inventory Data Stored at: " + JSON_LOC);
         } catch (IOException e) {
             System.out.println("Unable to Read Data from File at: " + JSON_LOC);
+        }
+    }
+
+    // EFFECTS: saves the current inventory data
+    private void doSave() throws FileNotFoundException {
+        String save = "";
+        while (!(save.equals("y") || save.equals("n"))) {
+            System.out.println("Would you Like to Save Inventory Data? (y/n)");
+            save = input.next();
+        }
+        if (save.equals("y")) {
+            jsonWriter.open();
+            jsonWriter.write(inv);
+            jsonWriter.close();
+            System.out.println("Data Saved");
         }
     }
 }

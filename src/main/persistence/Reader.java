@@ -16,16 +16,20 @@ import org.json.*;
 public class Reader {
     private String src;
 
+    // EFFECTS: creates a reader to the file at source src
     public Reader(String src) {
         this.src = src;
     }
 
+    // EFFECTS: returns inventory data from the file after reading,
+    // throws IOException if an error occurs while reading data
     public Inventory read() throws IOException {
         String jsonData = readFile(src);
         JSONObject jsonObject = new JSONObject(jsonData);
         return parseInventory(jsonObject);
     }
 
+    // EFFECTS: reads the source file as a string and returns it
     public String readFile(String src) throws IOException {
         StringBuilder jsonString = new StringBuilder();
 
@@ -36,25 +40,34 @@ public class Reader {
         return jsonString.toString();
     }
 
+    // EFFECTS: parses inventory from jsonObject and returns it
     private Inventory parseInventory(JSONObject jsonObject) {
         Inventory inv = new Inventory();
         double sales = jsonObject.getDouble("sales");
         int discount = jsonObject.getInt("discount");
         inv.setSales(sales);
         inv.setDiscount(discount);
+        addItems(jsonObject, inv);
+        return inv;
+    }
+
+    // MODIFIES: inv
+    // EFFECTS: parses items from jsonObject and adds them to inventory
+    private void addItems(JSONObject jsonObject, Inventory inv) {
         JSONArray jsonArray = jsonObject.getJSONArray("listOfItem");
         ArrayList<Item> listOfItems = new ArrayList<>();
         for (Object json : jsonArray) {
             JSONObject nextItem = (JSONObject) json;
             addItem(inv, nextItem);
         }
-        return inv;
     }
 
-    private void addItem(Inventory inv, JSONObject nextItem) {
-        String productName = nextItem.getString("productName");
-        int quantity = nextItem.getInt("quantity");
-        double price = nextItem.getDouble("price");
+    // MODIFIES: inv
+    // EFFECTS: parses item from jsonObject and adds it to inventory
+    private void addItem(Inventory inv, JSONObject jsonObject) {
+        String productName = jsonObject.getString("productName");
+        int quantity = jsonObject.getInt("quantity");
+        double price = jsonObject.getDouble("price");
         inv.addNewItem(new Item(productName, quantity, price));
     }
 }
