@@ -1,7 +1,12 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 // represents an item having a unique id, product name, its quantity, as well as the price for one unit of the item
-public class Item {
+// method implementation of toJson taken from:
+// https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo/blob/master/src/main/model/Thingy.java
+public class Item implements Writable {
     private static final int lowQuantity = 3;
     private int id;
     private String productName;
@@ -55,5 +60,15 @@ public class Item {
     // EFFECTS: sets the price of the item
     public void setPrice(int amount) {
         this.price = amount;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("productName", productName);
+        json.put("quantity", quantity);
+        json.put("price", price);
+        return json;
     }
 }

@@ -2,7 +2,11 @@ package ui;
 
 import model.Inventory;
 import model.Item;
+import persistence.Reader;
+import persistence.Writer;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,17 +15,20 @@ import java.util.Scanner;
 
 // Inventory Management Application
 public class InventoryApp {
+    private static final String JSON_LOC = "";
     private Inventory inv;
     private Scanner input;
+    private Writer jsonWriter;
+    private Reader jsonReader;
 
     // EFFECTS: runs the inventory application
-    public InventoryApp() {
+    public InventoryApp() throws FileNotFoundException {
         runInventory();
     }
 
     // MODIFIES: this
     // EFFECTS: handles user input
-    private void runInventory() {
+    private void runInventory() throws FileNotFoundException {
         boolean continueProcess = true;
         String command;
 
@@ -31,7 +38,17 @@ public class InventoryApp {
             menuOptions();
             command = input.next();
 
-            if (command.equals("7")) {
+            if (command.equals("8")) {
+                String save = "";
+                while (!(save.equals("y") || save.equals("n"))) {
+                    System.out.println("Would you Like to Save Inventory Data? (y/n)");
+                    save = input.next();
+                }
+                if (save.equals("y")) {
+                    jsonWriter.open();
+                    jsonWriter.write(inv);
+                    jsonWriter.close();
+                }
                 continueProcess = false;
             } else {
                 processChoice(command);
@@ -46,6 +63,8 @@ public class InventoryApp {
         inv = new Inventory();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
+        jsonWriter = new Writer(JSON_LOC);
+        jsonReader = new Reader(JSON_LOC);
     }
 
     // EFFECTS: presents the options the user can choose from
@@ -57,7 +76,8 @@ public class InventoryApp {
         System.out.println("4. View Money Made in Sales");
         System.out.println("5. View Products that are Low in Quantity");
         System.out.println("6. Set a Discount Percentage");
-        System.out.println("7. Quit");
+        System.out.println("7. Load Inventory From Save");
+        System.out.println("8. Quit");
     }
 
     // EFFECTS: processes the inputs the user gives
@@ -66,27 +86,24 @@ public class InventoryApp {
             case "1":
                 doNew();
                 break;
-
             case "2":
                 doAdd();
                 break;
-
             case "3":
                 doSell();
                 break;
-
             case "4":
                 returnSales();
                 break;
-
             case "5":
                 doViewRestock();
                 break;
-
             case "6":
                 doDiscount();
                 break;
-
+            case "7":
+                doLoad();
+                break;
             default:
                 System.out.println("Invalid Choice");
         }
@@ -179,5 +196,14 @@ public class InventoryApp {
             discount = input.nextInt();
         }
         inv.setDiscount(discount);
+    }
+
+    private void doLoad() {
+        try {
+            inv = jsonReader.read();
+            System.out.println("Successfully Loaded Inventory Data Stored at: " + JSON_LOC);
+        } catch (IOException e) {
+            System.out.println("Unable to Read Data from File at: " + JSON_LOC);
+        }
     }
 }

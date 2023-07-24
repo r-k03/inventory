@@ -1,10 +1,16 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 // represents an inventory containing a list of items in stock, the current discount, and total sales ($)
-public class Inventory {
+// implementation of toJson taken from:
+// https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo/blob/master/src/main/model/WorkRoom.java
+public class Inventory implements Writable {
     private final List<Item> listOfItems;
     private int discount;
     private double sales;
@@ -29,6 +35,10 @@ public class Inventory {
 
     public void setDiscount(int amount) {
         this.discount = amount;
+    }
+
+    public void setSales(double sales) {
+        this.sales = sales;
     }
 
     // REQUIRES: an item with the given id is present in listOfItems
@@ -105,5 +115,18 @@ public class Inventory {
                 }
             }
         }
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONArray jsonArray = new JSONArray();
+        JSONObject json = new JSONObject();
+        for (Item i : listOfItems) {
+            jsonArray.put(i.toJson());
+        }
+        json.put("listOfItem", jsonArray);
+        json.put("sales", sales);
+        json.put("discount", discount);
+        return json;
     }
 }
