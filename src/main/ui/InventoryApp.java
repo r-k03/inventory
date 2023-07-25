@@ -73,6 +73,7 @@ public class InventoryApp {
     }
 
     // EFFECTS: processes the inputs the user gives
+    @SuppressWarnings("methodlength")
     private void processChoice(String command) {
         switch (command) {
             case "1":
@@ -105,6 +106,7 @@ public class InventoryApp {
     }
 
     // EFFECTS: returns the details of all items in inventory, if any else indicates otherwise
+    @SuppressWarnings("all")
     private void doPrint() {
         if (inv.getListOfItems().isEmpty()) {
             System.out.println("No Items in Inventory");
@@ -142,6 +144,7 @@ public class InventoryApp {
     }
 
     // EFFECTS: increases the stock of a particular item
+    @SuppressWarnings("all")
     private void doAdd() {
         System.out.println("Enter ID of the Product to be Restocked: ");
         int id = input.nextInt();
@@ -161,6 +164,7 @@ public class InventoryApp {
 
     // MODIFIES: this
     // EFFECTS: conducts a sell transaction and adds the money made to sales
+    @SuppressWarnings("all")
     private void doSell() {
         System.out.println("Enter ID of the Product to be Sold: ");
         int id = input.nextInt();
