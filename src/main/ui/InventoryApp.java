@@ -106,14 +106,13 @@ public class InventoryApp {
     }
 
     // EFFECTS: returns the details of all items in inventory, if any else indicates otherwise
-    @SuppressWarnings("all")
     private void doPrint() {
         if (inv.getListOfItems().isEmpty()) {
             System.out.println("No Items in Inventory");
         } else {
             System.out.println("ID:Name:Quantity:Price");
             for (Item i : inv.getListOfItems()) {
-                System.out.println(i.getId() + " : " + i.getProductName() + " : " + i.getQuantity() + " : " + i.getPrice());
+                System.out.println(i.getId() + ":" + i.getProductName() + ":" + i.getQuantity() + ":" + i.getPrice());
             }
         }
     }
@@ -144,7 +143,6 @@ public class InventoryApp {
     }
 
     // EFFECTS: increases the stock of a particular item
-    @SuppressWarnings("all")
     private void doAdd() {
         System.out.println("Enter ID of the Product to be Restocked: ");
         int id = input.nextInt();
@@ -156,7 +154,7 @@ public class InventoryApp {
                 amt = input.nextInt();
             }
             itemToAdd.updateQuantity(amt);
-            System.out.println("Quantity of " + inv.getItemFromId(id).getProductName() + " has been updated to " + inv.getItemFromId(id).getQuantity());
+            System.out.println("Quantity of " + inv.getItemFromId(id).getProductName() + " has been updated");
         } else {
             System.out.println("Item Not Found");
         }
@@ -164,7 +162,6 @@ public class InventoryApp {
 
     // MODIFIES: this
     // EFFECTS: conducts a sell transaction and adds the money made to sales
-    @SuppressWarnings("all")
     private void doSell() {
         System.out.println("Enter ID of the Product to be Sold: ");
         int id = input.nextInt();
@@ -175,8 +172,10 @@ public class InventoryApp {
                 System.out.println("Enter Quantity to Sell: ");
                 amt = input.nextInt();
             }
+            double oldSales = inv.getSales();
             inv.sellItem(id, amt);
-            System.out.println(amt + " " + inv.getItemFromId(id).getProductName() + " has been sold for $" + (inv.getItemFromId(id).getPrice() * amt));
+            double moneyMade = inv.getSales() - oldSales;
+            System.out.println(amt + " " + inv.getItemFromId(id).getProductName() + " sold for $" + moneyMade);
         } else {
             System.out.println("Item Not Found");
         }
