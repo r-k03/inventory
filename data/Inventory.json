@@ -1,5 +1,10 @@
 {
-    "discount": 0,
-    "listOfItem": [],
+    "discount": 50,
+    "listOfItem": [{
+        "quantity": 1,
+        "price": 40,
+        "id": 1,
+        "productName": "pc electric kettle"
+    }],
     "sales": 0
 }

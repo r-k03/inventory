@@ -38,8 +38,7 @@ public class InventoryApp {
             menuOptions();
             command = input.next();
 
-            if (command.equals("9")) {
-                doSave();
+            if (command.equals("10")) {
                 continueProcess = false;
             } else {
                 processChoice(command);
@@ -69,12 +68,13 @@ public class InventoryApp {
         System.out.println("6. View Products that are Low in Quantity");
         System.out.println("7. Set a Discount Percentage");
         System.out.println("8. Load Inventory From Save");
-        System.out.println("9. Quit");
+        System.out.println("9. Save Inventory");
+        System.out.println("10. Quit");
     }
 
     // EFFECTS: processes the inputs the user gives
     @SuppressWarnings("methodlength")
-    private void processChoice(String command) {
+    private void processChoice(String command) throws FileNotFoundException {
         switch (command) {
             case "1":
                 doPrint();
@@ -99,6 +99,9 @@ public class InventoryApp {
                 break;
             case "8":
                 doLoad();
+                break;
+            case "9":
+                doSave();
                 break;
             default:
                 System.out.println("Invalid Choice");
@@ -226,16 +229,10 @@ public class InventoryApp {
 
     // EFFECTS: saves the current inventory data
     private void doSave() throws FileNotFoundException {
-        String save = "";
-        while (!(save.equals("y") || save.equals("n"))) {
-            System.out.println("Would you Like to Save Inventory Data? (y/n)");
-            save = input.next();
-        }
-        if (save.equals("y")) {
-            jsonWriter.open();
-            jsonWriter.write(inv);
-            jsonWriter.close();
-            System.out.println("Data Saved");
-        }
+        jsonWriter.open();
+        jsonWriter.write(inv);
+        jsonWriter.close();
+        System.out.println("Data Saved");
     }
 }
+
