@@ -53,7 +53,6 @@ public class InventoryUI extends JFrame {
 
         displayInventory();
 
-        itemPane.setLocation(desktop.getX() - itemPane.getWidth(), desktop.getY() - itemPane.getY());
         itemPane.pack();
         itemPane.setVisible(true);
         desktop.add(itemPane);
@@ -88,21 +87,26 @@ public class InventoryUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             String name = JOptionPane.showInputDialog(null, "Enter Item Name");
-            if (inv.isPresent(name)) {
-                String msg = "Item With the Same Name Already Exists";
-                JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.INFORMATION_MESSAGE);
+            if (name == null || inv.isPresent(name)) {
+                String msg;
+                if (name == null) {
+                    msg = "No Name Entered";
+                } else {
+                    msg = "Item With the Same Name Already Exists";
+                }
+                JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             int quantity = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter Quantity in Stock"));
             if (quantity < 0) {
                 String msg = "Quantity Cannot be Negative";
-                JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             double price = Double.parseDouble(JOptionPane.showInputDialog(null, "Enter Item Price"));
             if (price <= 0.0) {
                 String msg = "Price Cannot be Zero or Negative";
-                JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             inv.addNewItem(new Item(name, quantity, price));
@@ -123,7 +127,15 @@ public class InventoryUI extends JFrame {
                 String msg = "No Items Low in Quantity";
                 JOptionPane.showMessageDialog(null, msg, "Items to Restock", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                return;
+                DefaultListModel<Item> restockModel = new DefaultListModel<>();
+                for (Item i : listRestock) {
+                    restockModel.addElement(i);
+                }
+                JList<Item> restockJlist = new JList<>();
+                restockJlist.setCellRenderer(new MyListRenderer());
+                restockJlist.setModel(restockModel);
+                JScrollPane restockScroll = new JScrollPane(restockJlist);
+                JOptionPane.showMessageDialog(null, restockScroll, "Items to Restock", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -139,11 +151,11 @@ public class InventoryUI extends JFrame {
             int discount = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter Discount as a Percentage"));
             if (discount < 0) {
                 String msg = "Discount Cannot be Negative";
-                JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             } else if (discount > 100) {
                 String msg = "Discount Cannot be Greater than 100%";
-                JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             inv.setDiscount(discount);
@@ -179,10 +191,10 @@ public class InventoryUI extends JFrame {
                 }
             } catch (IOException er) {
                 String msg = "File Not Accessible: " + JSON_LOC;
-                JOptionPane.showMessageDialog(null, msg, "System Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, msg, "System Error", JOptionPane.ERROR_MESSAGE);
             } catch (InvalidPathException er) {
                 String msg = "Invalid Path: " + JSON_LOC;
-                JOptionPane.showMessageDialog(null, msg, "System Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, msg, "System Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -201,7 +213,7 @@ public class InventoryUI extends JFrame {
                 jsonWriter.close();
             } catch (FileNotFoundException er) {
                 String msg = "File Not Found: " + JSON_LOC;
-                JOptionPane.showMessageDialog(null, msg, "System Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, msg, "System Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -227,13 +239,13 @@ public class InventoryUI extends JFrame {
         JList<Item> itemJList = new JList<>();
         itemJList.setCellRenderer(new MyListRenderer());
         itemJList.setModel(listModel);
-        itemJList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                JList list = (JList) (e.getSource());
-                JOptionPane.showMessageDialog(itemPanel, list.getSelectedValue());
-            }
-        });
+//        itemJList.addListSelectionListener(new ListSelectionListener() {
+//            @Override
+//            public void valueChanged(ListSelectionEvent e) {
+//                JList list = (JList) (e.getSource());
+//                JOptionPane.showMessageDialog(itemPanel, list.getSelectedValue());
+//            }
+//        });
         JScrollPane scrollPane = new JScrollPane(itemJList);
         itemPanel.add(scrollPane);
 
