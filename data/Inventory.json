@@ -1,30 +1,5 @@
 {
-    "discount": 40,
-    "listOfItem": [
-        {
-            "quantity": 1,
-            "price": 40,
-            "id": 1,
-            "productName": "pc electric kettle"
-        },
-        {
-            "quantity": 3,
-            "price": 4,
-            "id": 2,
-            "productName": "aa"
-        },
-        {
-            "quantity": 3,
-            "price": 3,
-            "id": 3,
-            "productName": "b"
-        },
-        {
-            "quantity": 99,
-            "price": 99,
-            "id": 4,
-            "productName": "a"
-        }
-    ],
-    "sales": 33.2
+    "discount": 0,
+    "listOfItem": [],
+    "sales": 0
 }

@@ -29,6 +29,7 @@ public class InventoryUI extends JFrame {
     private JInternalFrame menuPane;
     private JInternalFrame itemPane;
     private DefaultListModel<Item> listModel;
+    private JList<Item> itemJList;
 
     public InventoryUI() {
         inv = new Inventory();
@@ -65,7 +66,7 @@ public class InventoryUI extends JFrame {
         JPanel buttons = new JPanel();
         buttons.setLayout(new GridLayout(0, 3));
         buttons.add(new JButton(new NewAction()));
-        buttons.add(new JButton("Restock Item"));
+        buttons.add(new JButton(new RestockAction()));
         buttons.add(new JButton("Sell Item"));
         buttons.add(new JButton(new ViewRestockAction()));
         buttons.add(new JButton(new DiscountAction()));
@@ -87,13 +88,8 @@ public class InventoryUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             String name = JOptionPane.showInputDialog(null, "Enter Item Name");
-            if (name == null || inv.isPresent(name)) {
-                String msg;
-                if (name == null) {
-                    msg = "No Name Entered";
-                } else {
-                    msg = "Item With the Same Name Already Exists";
-                }
+            if (name == null || name.equals("") || inv.isPresent(name)) {
+                String msg = (!inv.isPresent(name)) ? "No Name Entered" : "Item With the Same Name Already Exists";
                 JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -111,6 +107,28 @@ public class InventoryUI extends JFrame {
             }
             inv.addNewItem(new Item(name, quantity, price));
             listModel.addElement(new Item(name, quantity, price));
+        }
+    }
+
+    private class RestockAction extends AbstractAction {
+
+        RestockAction() {
+            super("Restock Selected Item");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Item selected = itemJList.getSelectedValue();
+            if (selected == null) {
+                JOptionPane.showMessageDialog(null, "No Item Selected", "Restock Item", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            int quantity = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter Quantity to Stock"));
+            if (quantity < 0) {
+                JOptionPane.showMessageDialog(null, "Negative Amount Given", "Restock Item", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            selected.updateQuantity(quantity);
         }
     }
 
@@ -230,13 +248,16 @@ public class InventoryUI extends JFrame {
         }
     }
 
+    // method implemented with the assistance of:
+    // https://stackoverflow.com/questions/75951305/how-to-display-a-list-of-objects-as-a-jlist-in-java-swing
     private void displayInventory() {
         JPanel itemPanel = new JPanel();
         listModel = new DefaultListModel<>();
         for (Item i : inv.getListOfItems()) {
             listModel.addElement(i);
         }
-        JList<Item> itemJList = new JList<>();
+        itemJList = new JList<>();
+        itemJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemJList.setCellRenderer(new MyListRenderer());
         itemJList.setModel(listModel);
 //        itemJList.addListSelectionListener(new ListSelectionListener() {
