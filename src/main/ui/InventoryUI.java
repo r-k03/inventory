@@ -6,9 +6,9 @@ import persistence.Reader;
 import persistence.Writer;
 
 import javax.swing.*;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+//import javax.swing.event.ListDataListener;
+//import javax.swing.event.ListSelectionEvent;
+//import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -21,7 +21,7 @@ import java.util.List;
 public class InventoryUI extends JFrame {
     private static final String JSON_LOC = "./data/Inventory.json";
     private static final int WIDTH = 1000;
-    private static final int HEIGHT = 800;
+    private static final int HEIGHT = 300;
     private Inventory inv;
     private Reader jsonReader;
     private Writer jsonWriter;
@@ -38,6 +38,7 @@ public class InventoryUI extends JFrame {
 
         desktop = new JDesktopPane();
         desktop.addMouseListener(new DesktopFocusAction());
+        desktop.setLayout(new FlowLayout(FlowLayout.CENTER));
         menuPane = new JInternalFrame("Options", false, false, false, false);
         itemPane = new JInternalFrame("Items", false, false, false, false);
         menuPane.setLayout(new BorderLayout());
