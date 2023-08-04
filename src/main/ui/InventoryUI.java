@@ -33,6 +33,8 @@ public class InventoryUI extends JFrame {
     private JList<Item> itemJList;
 
     public InventoryUI() {
+        splashScreen();
+
         inv = new Inventory();
         jsonReader = new Reader(JSON_LOC);
         jsonWriter = new Writer(JSON_LOC);
@@ -62,6 +64,20 @@ public class InventoryUI extends JFrame {
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    private static void splashScreen() {
+        JWindow window = new JWindow();
+        window.getContentPane().add(
+                new JLabel("", new ImageIcon("./data/loading_screen.gif"), SwingConstants.CENTER));
+        window.setBounds(500, 150, 700, 300);
+        window.setVisible(true);
+        try {
+            Thread.sleep(6800);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        window.setVisible(false);
     }
 
     private void buttonPanel() {
