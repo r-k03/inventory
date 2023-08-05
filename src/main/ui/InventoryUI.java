@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.util.List;
 
+// represents the inventory applications GUI
 public class InventoryUI extends JFrame {
     private static final String JSON_LOC = "./data/Inventory.json";
     private static final int WIDTH = 1000;
@@ -28,8 +29,9 @@ public class InventoryUI extends JFrame {
     private DefaultListModel<Item> listModel;
     private JList<Item> itemJList;
 
+    // EFFECTS: displays the splash screen, sets up the items and buttons panel
     public InventoryUI() {
-        splashScreen();
+        SplashScreen.getInstance().displayScreen();
 
         inv = new Inventory();
         jsonReader = new Reader(JSON_LOC);
@@ -62,20 +64,8 @@ public class InventoryUI extends JFrame {
         setVisible(true);
     }
 
-    private static void splashScreen() {
-        JWindow window = new JWindow();
-        window.getContentPane().add(
-                new JLabel("", new ImageIcon("./data/loading_screen.gif"), SwingConstants.CENTER));
-        window.setBounds(500, 150, 700, 300);
-        window.setVisible(true);
-        try {
-            Thread.sleep(6750);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
-        window.setVisible(false);
-    }
-
+    // MODIFIES: this
+    // EFFECTS: adds buttons to the buttons panel
     private void buttonPanel() {
         JPanel buttons = new JPanel();
         buttons.setLayout(new GridLayout(0, 3));
@@ -92,13 +82,15 @@ public class InventoryUI extends JFrame {
         menuPane.add(buttons, BorderLayout.WEST);
     }
 
+    // represents an add item button
     private class NewAction extends AbstractAction {
 
         NewAction() {
             super("Add New Item");
         }
 
-        // item display addition implemented with reference from: https://stackoverflow.com/a/4262716
+        // MODIFIES: this
+        // EFFECTS: adds a new item to the list of items, shows an error dialog box otherwise
         @Override
         public void actionPerformed(ActionEvent e) {
             String name = JOptionPane.showInputDialog(null, "Enter Item Name");
@@ -127,17 +119,20 @@ public class InventoryUI extends JFrame {
         }
     }
 
+    // EFFECTS: displays an error dialog box
     private static void numberFormatMessage() {
         String msg = "No Input Given/Input is a String";
         JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    // represents a restock button
     private class RestockAction extends AbstractAction {
 
         RestockAction() {
             super("Restock Selected Item");
         }
 
+        // EFFECTS: updates the quantity of the selected item, shows an error dialog box otherwise
         @Override
         public void actionPerformed(ActionEvent e) {
             Item selected = itemJList.getSelectedValue();
@@ -158,17 +153,20 @@ public class InventoryUI extends JFrame {
         }
     }
 
+    // EFFECTS: shows an error dialog box
     private static void negativeQuantity() {
         String msg = "Negative Amount Given";
         JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    // represents a sell button
     private class SellAction extends AbstractAction {
 
         SellAction() {
             super("Sell Item");
         }
 
+        // EFFECTS: sells the item selected, and adds the amount to sales
         @Override
         public void actionPerformed(ActionEvent e) {
             Item selected = itemJList.getSelectedValue();
@@ -194,12 +192,14 @@ public class InventoryUI extends JFrame {
         }
     }
 
+    // represents a view items to restock button
     private class ViewRestockAction extends AbstractAction {
 
         ViewRestockAction() {
             super("View Items to Restock");
         }
 
+        // EFFECTS: returns a list of items low in quantity, display a message if no items low
         @Override
         public void actionPerformed(ActionEvent e) {
             List<Item> listRestock = inv.itemsToRestock();
@@ -220,12 +220,14 @@ public class InventoryUI extends JFrame {
         }
     }
 
+    // represents a set discount button
     private class DiscountAction extends AbstractAction {
 
         DiscountAction() {
             super("Set Discount");
         }
 
+        // EFFECTS: modifies the discount amount, shows an error dialog box otherwise
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -246,12 +248,14 @@ public class InventoryUI extends JFrame {
         }
     }
 
+    // represents a sales button
     private class SalesAction extends AbstractAction {
 
         SalesAction() {
             super("View Amount Earned in Sales");
         }
 
+        // EFFECTS: displays the sales made so far
         @Override
         public void actionPerformed(ActionEvent e) {
             String msg = "Amount Earned in Sales is: $" + inv.getSales();
@@ -259,12 +263,15 @@ public class InventoryUI extends JFrame {
         }
     }
 
+    // represents a load button
     private class LoadAction extends AbstractAction {
 
         LoadAction() {
             super("Load Save");
         }
 
+        // MODIFIES: this
+        // EFFECTS: loads the inventory from a save, throws an error if it cannot be loaded
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -283,12 +290,14 @@ public class InventoryUI extends JFrame {
         }
     }
 
+    // represents a save button
     private class SaveAction extends AbstractAction {
 
         SaveAction() {
             super("Save");
         }
 
+        // EFFECTS: saves the inventory to a save file
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -302,20 +311,22 @@ public class InventoryUI extends JFrame {
         }
     }
 
+    // represents a quit button
     private class QuitAction extends AbstractAction {
 
         QuitAction() {
             super("Quit");
         }
 
+        // EFFECTS: closes the application
         @Override
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
         }
     }
 
-    // method implemented with the assistance of:
-    // https://stackoverflow.com/questions/75951305/how-to-display-a-list-of-objects-as-a-jlist-in-java-swing
+    // MODIFIES: this
+    // EFFECTS: displays the items currently in inventory
     private void displayInventory() {
         JPanel itemPanel = new JPanel();
         listModel = new DefaultListModel<>();
@@ -334,17 +345,20 @@ public class InventoryUI extends JFrame {
         itemPane.add(itemPanel, BorderLayout.WEST);
     }
 
+    // represents a mouse listener
     private class DesktopFocusAction extends MouseAdapter {
+
+        // EFFECTS: sets a mouse click listener for the UI
         @Override
         public void mouseClicked(MouseEvent e) {
             InventoryUI.this.requestFocusInWindow();
         }
     }
 
-    // implementation from https://www.youtube.com/watch?v=cjVB8wT4kA0
-    // displays custom labels for Items
+    // represents a cell renderer for JLists
     private class MyListRenderer extends DefaultListCellRenderer implements ListCellRenderer<Object> {
 
+        // EFFECTS: sets custom labels for list items
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
                                                       boolean cellHasFocus) {
