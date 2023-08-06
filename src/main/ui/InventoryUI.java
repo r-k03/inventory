@@ -31,7 +31,7 @@ public class InventoryUI extends JFrame {
 
     // EFFECTS: displays the splash screen, sets up the items and buttons panel
     public InventoryUI() {
-        SplashScreen.getInstance().displayScreen();
+        //SplashScreen.getInstance().displayScreen();
 
         inv = new Inventory();
         jsonReader = new Reader(JSON_LOC);
@@ -42,6 +42,8 @@ public class InventoryUI extends JFrame {
         desktop.setLayout(new FlowLayout());
         menuPane = new JInternalFrame("Options", false, false, false, false);
         itemPane = new JInternalFrame("Items", false, false, false, false);
+//        menuPane.setLocation(20, 80);
+//        itemPane.setLocation(650, 50);
         menuPane.setLayout(new BorderLayout());
 
         setContentPane(desktop);

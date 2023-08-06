@@ -7,7 +7,7 @@ public class SplashScreen extends JWindow {
     private static SplashScreen splash = new SplashScreen();
     private JWindow window;
 
-    // EFFECTS: sets up the window for the splash screen
+    // EFFECTS: constructs a window for the splash screen
     private SplashScreen() {
         JLabel display = new JLabel(new ImageIcon("./data/loading_screen.gif"), SwingConstants.CENTER);
         window = new JWindow();
