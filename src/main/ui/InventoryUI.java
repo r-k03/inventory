@@ -43,11 +43,10 @@ public class InventoryUI extends JFrame {
         desktop = new JDesktopPane();
         desktop.addMouseListener(new DesktopFocusAction());
         addWindowListener(new WindowCloser());
-        desktop.setLayout(new FlowLayout());
         menuPane = new JInternalFrame("Options", false, false, false, false);
         itemPane = new JInternalFrame("Items", false, false, false, false);
-//        menuPane.setLocation(20, 80);
-//        itemPane.setLocation(650, 50);
+        menuPane.setLocation(20, 80);
+        itemPane.setLocation(650, 50);
 
 
         setContentPane(desktop);
@@ -78,12 +77,13 @@ public class InventoryUI extends JFrame {
     // EFFECTS: adds buttons to the buttons panel
     private void buttonPanel() {
         JPanel buttons = new JPanel();
-        buttons.setLayout(new GridLayout(0, 3));
+        buttons.setLayout(new GridLayout(0, 2));
         buttons.add(new JButton(new NewAction()));
         buttons.add(new JButton(new RestockAction()));
         buttons.add(new JButton(new SellAction()));
         buttons.add(new JButton(new ViewRestockAction()));
         buttons.add(new JButton(new DiscountAction()));
+        buttons.add(new JButton(new ViewDiscountAction()));
         buttons.add(new JButton(new SalesAction()));
         buttons.add(new JButton(new LoadAction()));
         buttons.add(new JButton(new SaveAction()));
@@ -260,6 +260,19 @@ public class InventoryUI extends JFrame {
             } catch (NumberFormatException ex) {
                 numberFormatMessage();
             }
+        }
+    }
+
+    private class ViewDiscountAction extends AbstractAction {
+
+        ViewDiscountAction() {
+            super("View Discount");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String msg = "Current Discount is: " + inv.getDiscount() + "%";
+            JOptionPane.showMessageDialog(null, msg, "Discount", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
