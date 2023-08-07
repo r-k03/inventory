@@ -45,8 +45,7 @@ public class InventoryUI extends JFrame {
         addWindowListener(new WindowCloser());
         menuPane = new JInternalFrame("Options", false, false, false, false);
         itemPane = new JInternalFrame("Items", false, false, false, false);
-        menuPane.setLocation(20, 80);
-        itemPane.setLocation(650, 50);
+
 
 
         setContentPane(desktop);
@@ -60,6 +59,9 @@ public class InventoryUI extends JFrame {
     }
 
     private void internalFrameSetup() {
+        menuPane.setLocation(20, 80);
+        itemPane.setLocation(650, 50);
+
         buttonPanel();
 
         menuPane.pack();

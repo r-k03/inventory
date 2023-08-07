@@ -103,6 +103,7 @@ public class Inventory implements Writable {
                 restockList.add(loopItem);
             }
         }
+        EventLog.getInstance().logEvent(new Event("Viewed Items Low in Quantity"));
         return restockList;
     }
 
