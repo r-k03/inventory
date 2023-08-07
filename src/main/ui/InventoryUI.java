@@ -47,7 +47,6 @@ public class InventoryUI extends JFrame {
         itemPane = new JInternalFrame("Items", false, false, false, false);
 
 
-
         setContentPane(desktop);
         setTitle("Inventory Management System");
         setSize(WIDTH, HEIGHT);
@@ -58,6 +57,8 @@ public class InventoryUI extends JFrame {
         setVisible(true);
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets up the contents of both internal frames, and their specifications
     private void internalFrameSetup() {
         menuPane.setLocation(20, 80);
         itemPane.setLocation(650, 50);
@@ -97,6 +98,7 @@ public class InventoryUI extends JFrame {
     // represents an add item button
     private class NewAction extends AbstractAction {
 
+        // EFFECTS: sets the button title
         NewAction() {
             super("Add New Item");
         }
@@ -145,6 +147,7 @@ public class InventoryUI extends JFrame {
     // represents a restock button
     private class RestockAction extends AbstractAction {
 
+        // EFFECTS: sets the button title
         RestockAction() {
             super("Restock Selected Item");
         }
@@ -179,6 +182,7 @@ public class InventoryUI extends JFrame {
     // represents a sell button
     private class SellAction extends AbstractAction {
 
+        // EFFECTS: sets the button title
         SellAction() {
             super("Sell Item");
         }
@@ -212,6 +216,7 @@ public class InventoryUI extends JFrame {
     // represents a view items to restock button
     private class ViewRestockAction extends AbstractAction {
 
+        // EFFECTS: sets the button title
         ViewRestockAction() {
             super("View Items to Restock");
         }
@@ -240,6 +245,7 @@ public class InventoryUI extends JFrame {
     // represents a set discount button
     private class DiscountAction extends AbstractAction {
 
+        // EFFECTS: sets the button title
         DiscountAction() {
             super("Set Discount");
         }
@@ -265,12 +271,15 @@ public class InventoryUI extends JFrame {
         }
     }
 
+    // represents a view discount button
     private class ViewDiscountAction extends AbstractAction {
 
+        // EFFECTS: sets the button title
         ViewDiscountAction() {
             super("View Discount");
         }
 
+        // displays the discount when the button is clicked
         @Override
         public void actionPerformed(ActionEvent e) {
             String msg = "Current Discount is: " + inv.getDiscount() + "%";
@@ -281,6 +290,7 @@ public class InventoryUI extends JFrame {
     // represents a sales button
     private class SalesAction extends AbstractAction {
 
+        // EFFECTS: sets the button title
         SalesAction() {
             super("View Amount Earned in Sales");
         }
@@ -296,6 +306,7 @@ public class InventoryUI extends JFrame {
     // represents a load button
     private class LoadAction extends AbstractAction {
 
+        // EFFECTS: sets the button title
         LoadAction() {
             super("Load Save");
         }
@@ -323,6 +334,7 @@ public class InventoryUI extends JFrame {
     // represents a save button
     private class SaveAction extends AbstractAction {
 
+        // EFFECTS: sets the button title
         SaveAction() {
             super("Save");
         }
@@ -344,14 +356,18 @@ public class InventoryUI extends JFrame {
     // represents a quit button
     private class QuitAction extends AbstractAction {
 
+        // EFFECTS: sets the button title
         QuitAction() {
             super("Quit");
         }
 
-        // EFFECTS: closes the application
+        // EFFECTS: prints the event log to the console before exiting the application
         @Override
         public void actionPerformed(ActionEvent e) {
-            doQuit();
+            for (model.Event next : EventLog.getInstance()) {
+                System.out.println(next.toString());
+            }
+            System.exit(0);
         }
     }
 
@@ -409,13 +425,6 @@ public class InventoryUI extends JFrame {
 
             return this;
         }
-    }
-
-    private void doQuit() {
-        for (model.Event next : EventLog.getInstance()) {
-            System.out.println(next.toString());
-        }
-        System.exit(0);
     }
 }
 

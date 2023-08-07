@@ -26,7 +26,7 @@ public class EventTest {
     @Test
     void tesConstructor() {
         assertEquals("Test Event", testEvent.getDescription());
-        assertTrue(abs(testDate.getTime() - testEvent.getDate().getTime()) <= 20);
+        assertEquals(testDate.getTime(), testEvent.getDate().getTime(), 20);
     }
 
     @Test
