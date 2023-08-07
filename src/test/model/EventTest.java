@@ -17,7 +17,7 @@ public class EventTest {
     @BeforeEach
     void runBefore() {
         testEvent = new Event("Test Event");
-        testEvent1 = new Event("Test Event");
+        testEvent1 = new Event("Test Event1");
         testDate = Calendar.getInstance().getTime();
     }
 
@@ -30,18 +30,19 @@ public class EventTest {
     @Test
     void testEquals() {
         assertFalse(testEvent.equals(null));
-        assertFalse(testEvent.equals(new Item("a",1,1)));
+        assertFalse(testEvent.equals(new Item("a", 1, 1)));
         assertFalse(testEvent.equals(new Event("Not Test Event")));
         assertFalse(testEvent.equals(new Event("Test Event")));
         assertFalse(testEvent.equals(testEvent1));
         assertTrue(testEvent.equals(testEvent));
     }
 
-//    @Test
-//    void testHashCode() {
-//       assertEquals(22125401, testEvent.hashCode());
-//    }
-
+   /* @Test
+    void testHashCode() {
+        Event testEvent2 = (Event)((Event)testEvent).clone();
+        assertEquals(testEvent.hashCode(),testEvent2.hashCode());
+    }
+*/
     @Test
     void testToString() {
         assertEquals(testDate.toString() + "\n" + "Test Event", testEvent.toString());
