@@ -16,7 +16,9 @@ import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.util.List;
 
-// represents the inventory applications GUI
+// basic structure designed with help from:
+// https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/blob/main/src/main/ca/ubc/cpsc210/alarm/ui/AlarmControllerUI.java
+// represents the inventory application GUI
 public class InventoryUI extends JFrame {
     private static final String JSON_LOC = "./data/Inventory.json";
     private static final int WIDTH = 1000;
@@ -59,7 +61,6 @@ public class InventoryUI extends JFrame {
     }
 
     private void internalFrameSetup() {
-//        menuPane.setLayout(new BorderLayout());
         buttonPanel();
 
         menuPane.pack();
