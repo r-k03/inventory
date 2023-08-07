@@ -37,6 +37,7 @@ public class EventTest {
         assertFalse(testEvent.equals(new Event("Test Event")));
         assertFalse(testEvent.equals(testEvent2));
         assertFalse(testEvent.equals(new Event("Test Event")));
+        assertTrue(testEvent.equals(testEvent1));
         assertTrue(testEvent.equals(testEvent));
     }
 
