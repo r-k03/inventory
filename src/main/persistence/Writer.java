@@ -1,5 +1,7 @@
 package persistence;
 
+import model.Event;
+import model.EventLog;
 import model.Inventory;
 import org.json.JSONObject;
 import java.io.*;
@@ -31,8 +33,9 @@ public class Writer {
     }
 
     // MODIFIES: this
-    // EFFECTS: closes the writer
+    // EFFECTS: closes the writer and logs the save event
     public void close() {
         printWriter.close();
+        EventLog.getInstance().logEvent(new Event("Inventory Saved to File"));
     }
 }

@@ -1,5 +1,6 @@
 package ui;
 
+import model.EventLog;
 import model.Inventory;
 import model.Item;
 import persistence.Reader;
@@ -31,7 +32,7 @@ public class InventoryUI extends JFrame {
 
     // EFFECTS: displays the splash screen, sets up the items and buttons panel
     public InventoryUI() {
-        //SplashScreen.getInstance().displayScreen();
+        SplashScreen.getInstance().displayScreen();
 
         inv = new Inventory();
         jsonReader = new Reader(JSON_LOC);
@@ -39,17 +40,26 @@ public class InventoryUI extends JFrame {
 
         desktop = new JDesktopPane();
         desktop.addMouseListener(new DesktopFocusAction());
+        addWindowListener(new WindowCloser());
         desktop.setLayout(new FlowLayout());
         menuPane = new JInternalFrame("Options", false, false, false, false);
         itemPane = new JInternalFrame("Items", false, false, false, false);
 //        menuPane.setLocation(20, 80);
 //        itemPane.setLocation(650, 50);
-        menuPane.setLayout(new BorderLayout());
+
 
         setContentPane(desktop);
         setTitle("Inventory Management System");
         setSize(WIDTH, HEIGHT);
 
+        internalFrameSetup();
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setVisible(true);
+    }
+
+    private void internalFrameSetup() {
+//        menuPane.setLayout(new BorderLayout());
         buttonPanel();
 
         menuPane.pack();
@@ -61,9 +71,6 @@ public class InventoryUI extends JFrame {
         itemPane.pack();
         itemPane.setVisible(true);
         desktop.add(itemPane);
-
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
     }
 
     // MODIFIES: this
@@ -113,11 +120,16 @@ public class InventoryUI extends JFrame {
                     JOptionPane.showMessageDialog(null, msg, "Input Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                inv.addNewItem(new Item(name, quantity, price));
-                listModel.addElement(new Item(name, quantity, price));
+                Item toAdd = new Item(name, quantity, price);
+                addItem(toAdd);
             } catch (NumberFormatException ex) {
                 numberFormatMessage();
             }
+        }
+
+        private void addItem(Item item) {
+            inv.addNewItem(item);
+            listModel.addElement(item);
         }
     }
 
@@ -323,7 +335,7 @@ public class InventoryUI extends JFrame {
         // EFFECTS: closes the application
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.exit(0);
+            doQuit();
         }
     }
 
@@ -381,6 +393,13 @@ public class InventoryUI extends JFrame {
 
             return this;
         }
+    }
+
+    private void doQuit() {
+        for (model.Event next : EventLog.getInstance()) {
+            System.out.println(next.toString());
+        }
+        System.exit(0);
     }
 }
 

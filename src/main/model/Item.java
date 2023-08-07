@@ -50,9 +50,13 @@ public class Item implements Writable {
 
     // REQUIRES: if negative, !(abs(amount) > this.quantity)
     // MODIFIES: this
-    // EFFECTS: updates the item's quantity by adding the parameter to it
+    // EFFECTS: updates the item's quantity by adding the parameter to it and adds the event to the log
     public void updateQuantity(int amount) {
         this.quantity += amount;
+        String eventString = "Item " + getProductName() + "'s quantity has been";
+        String appendString = (amount >= 0) ? " increased by: " + amount : " decreased by: " + amount;
+        eventString += appendString;
+        EventLog.getInstance().logEvent(new Event(eventString));
     }
 
     // REQUIRES: amount > 0

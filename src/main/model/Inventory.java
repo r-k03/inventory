@@ -34,8 +34,11 @@ public class Inventory implements Writable {
         return this.sales;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the discount value and logs the event
     public void setDiscount(int amount) {
         this.discount = amount;
+        EventLog.getInstance().logEvent(new Event("Discount set to " + amount + "%"));
     }
 
     public void setSales(double sales) {
@@ -55,10 +58,11 @@ public class Inventory implements Writable {
 
     // REQUIRES: the item is not present in listOfItems
     // MODIFIES: this
-    // EFFECTS: adds a new item to the list of items
+    // EFFECTS: adds a new item to the list of items and logs the event
     public void addNewItem(Item i) {
         i.setId(listOfItems.size() + 1);
         this.listOfItems.add(i);
+        EventLog.getInstance().logEvent(new Event("Item " + i.getProductName() + " added to Inventory"));
     }
 
     // EFFECTS: indicates whether an item with the same id is present in the list
@@ -104,16 +108,18 @@ public class Inventory implements Writable {
 
     // REQUIRES: an item with matching ids is present in listOfItems && amount <= quantity of specified item
     // MODIFIES: this
-    // EFFECTS: sells the given quantity of the item and adds the price to sales
+    // EFFECTS: sells the given quantity of the item, adds the price to sales and logs the event
     public void sellItem(int id, int amount) {
         for (Item i : listOfItems) {
             if (i.getId() == id) {
+                double oldSales = this.sales;
                 i.updateQuantity(-amount);
                 if (discount != 0) {
                     this.sales += amount * i.getPrice() * (1 - this.discount / 100.0);
                 } else {
                     this.sales += amount * i.getPrice();
                 }
+                EventLog.getInstance().logEvent(new Event("Item(s) sold for $" + (this.sales - oldSales)));
             }
         }
     }
