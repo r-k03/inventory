@@ -14,6 +14,7 @@ public class Inventory implements Writable {
     private final List<Item> listOfItems;
     private int discount;
     private double sales;
+    private EventLog log = EventLog.getInstance();
 
     // EFFECTS: constructs an inventory with no items, and 0 sales as well as discounts
     public Inventory() {
@@ -38,7 +39,7 @@ public class Inventory implements Writable {
     // EFFECTS: sets the discount value and logs the event
     public void setDiscount(int amount) {
         this.discount = amount;
-        EventLog.getInstance().logEvent(new Event("Discount set to " + amount + "%"));
+        log.logEvent(new Event("Discount set to " + amount + "%"));
     }
 
     public void setSales(double sales) {
@@ -62,7 +63,7 @@ public class Inventory implements Writable {
     public void addNewItem(Item i) {
         i.setId(listOfItems.size() + 1);
         this.listOfItems.add(i);
-        EventLog.getInstance().logEvent(new Event("Item " + i.getProductName() + " added to Inventory"));
+        log.logEvent(new Event("Item " + i.getProductName() + " added to Inventory"));
     }
 
     // EFFECTS: indicates whether an item with the same id is present in the list
@@ -103,7 +104,7 @@ public class Inventory implements Writable {
                 restockList.add(loopItem);
             }
         }
-        EventLog.getInstance().logEvent(new Event("Viewed Items Low in Quantity"));
+        log.logEvent(new Event("Viewed Items Low in Quantity"));
         return restockList;
     }
 
@@ -120,7 +121,7 @@ public class Inventory implements Writable {
                 } else {
                     this.sales += amount * i.getPrice();
                 }
-                EventLog.getInstance().logEvent(new Event("Item(s) sold for $" + (this.sales - oldSales)));
+                log.logEvent(new Event("Item(s) sold for $" + (this.sales - oldSales)));
             }
         }
     }

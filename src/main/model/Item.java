@@ -12,6 +12,7 @@ public class Item implements Writable {
     private String productName;
     private int quantity;
     private double price;
+    private EventLog log = EventLog.getInstance();
 
     // EFFECTS: item is assigned a name, quantity and price
     public Item(String productName, int quantity, double price) {
@@ -56,7 +57,7 @@ public class Item implements Writable {
         String eventString = "Item " + getProductName() + "'s quantity has been";
         String appendString = (amount >= 0) ? " increased by: " + amount : " decreased by: " + amount;
         eventString += appendString;
-        EventLog.getInstance().logEvent(new Event(eventString));
+        log.logEvent(new Event(eventString));
     }
 
     // REQUIRES: amount > 0

@@ -1,7 +1,5 @@
 package persistence;
 
-import model.Event;
-import model.EventLog;
 import model.Item;
 import model.Inventory;
 import java.io.IOException;
@@ -23,12 +21,11 @@ public class Reader {
         this.src = src;
     }
 
-    // EFFECTS: returns inventory data from the file after reading and logs the event,
+    // EFFECTS: returns inventory data from the file after reading,
     // throws IOException if an error occurs while reading data
     public Inventory read() throws IOException {
         String jsonData = readFile(src);
         JSONObject jsonObject = new JSONObject(jsonData);
-        EventLog.getInstance().logEvent(new Event("Inventory Loaded From Save File"));
         return parseInventory(jsonObject);
     }
 

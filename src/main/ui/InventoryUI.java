@@ -31,10 +31,13 @@ public class InventoryUI extends JFrame {
     private JInternalFrame itemPane;
     private DefaultListModel<Item> listModel;
     private JList<Item> itemJList;
+    private WindowCloser windowCloser;
+    private SplashScreen splashScreen;
 
     // EFFECTS: displays the splash screen, sets up the items and buttons panel
     public InventoryUI() {
-        SplashScreen.getInstance().displayScreen();
+        splashScreen = SplashScreen.getInstance();
+        splashScreen.displayScreen();
 
         inv = new Inventory();
         jsonReader = new Reader(JSON_LOC);
@@ -42,7 +45,8 @@ public class InventoryUI extends JFrame {
 
         desktop = new JDesktopPane();
         desktop.addMouseListener(new DesktopFocusAction());
-        addWindowListener(new WindowCloser());
+        windowCloser = new WindowCloser();
+        addWindowListener(windowCloser);
         menuPane = new JInternalFrame("Options", false, false, false, false);
         itemPane = new JInternalFrame("Items", false, false, false, false);
 
