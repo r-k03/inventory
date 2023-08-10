@@ -11,7 +11,7 @@ The application I am designing for my project is an inventory management system,
 - As a user, I want to be able to view the amount of money I made in sales
 - As a user, I want to be able to set discounts that are applied when selling products
 - As a user, I want to be able to load inventory data from a previous save
-- As a user, I want to be able to save data before exiting the application
+- As a user, I want to be able to save inventory data 
 
 ## Phase 4: Task 2
 
@@ -26,7 +26,7 @@ Discount set to 50%\
 Wed Aug 09 00:14:25 PDT 2023\
 Item electric kettle's quantity has been decreased by: -3\
 Wed Aug 09 00:14:25 PDT 2023\
-Item(s) sold for $3.0\
+Item(s) sold for $3.0
 
 ## Phase 4: Task 3
 
